@@ -1,15 +1,27 @@
 package fr.diginamic.spring_demo.entity;
 
 public class Ville {
-	
+	private int id;
+	/** Getter for id
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+	/** Setter for id
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
 	private String nom;
 	private int nbHabitants;
 	/** Constructor
 	 * @param nom
 	 * @param nbHabitants
 	 */
-	public Ville(String nom, int nbHabitants) {
-		super();
+	public Ville(int id,String nom, int nbHabitants) {
+		this.id=id;
 		this.nom = nom;
 		this.nbHabitants = nbHabitants;
 	}
