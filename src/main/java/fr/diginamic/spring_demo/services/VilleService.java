@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import fr.diginamic.spring_demo.entity.Ville;
 import fr.diginamic.spring_demo.entity.VilleTp6;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

@@ -52,7 +52,7 @@ public class VilleControleur {
 	 * @param nom
 	 * @return
 	 */
-	@GetMapping("/{nom}")
+	@GetMapping("/nom/{nom}")
 	public Ville extraireVilleChemin(@PathVariable String nom) {
 		System.out.println(nom);
 
@@ -64,16 +64,19 @@ public class VilleControleur {
 // TP 4 
 //	@PostMapping
 //	public ResponseEntity<String> insererVille(@RequestBody Ville nvVille) {
-//		
-//		Ville ville = liste.stream().filter(v -> v.getNom().equals(nvVille.getNom())).findFirst().orElse(null);
-//		if(ville == null) {
-//			liste.add(nvVille);
-//		return ResponseEntity.ok("Succes!");
+//		if(liste.contains(nvVille)) {
+//			return ResponseEntity.badRequest().body("La ville" + nvVille.getNom() + "existe déjà");
 //		}
-//		return ResponseEntity.badRequest().body("La ville existe déjà");
+//		liste.add(nvVille);
+//		return ResponseEntity.ok("Succes!");
 //	}
 	
 	
+	/** 
+	 *  L'annotation @GetMapping indique à Spring qu'il doit extraire une ville par son id
+	 * @param id
+	 * @return ville
+	 */
 	@GetMapping("/{id}")
 	public Ville extraireVilleParId(@PathVariable int id) {
 		return liste.stream().filter(v -> v.getId() == id).findFirst().orElse(null);
@@ -90,7 +93,7 @@ public class VilleControleur {
 		return ResponseEntity.badRequest().body("La ville existe déjà");
 	}
 	
-	@PutMapping("/{id}")
+	@PutMapping
 	public ResponseEntity<String> modifierVille(@RequestBody Ville editVille){
 		Ville ville = extraireVilleParId(editVille.getId());
 		if(ville != null) {

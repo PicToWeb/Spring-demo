@@ -1,5 +1,7 @@
 package fr.diginamic.spring_demo.entity;
 
+import java.util.Objects;
+
 public class Ville {
 	private int id;
 	/** Getter for id
@@ -24,6 +26,23 @@ public class Ville {
 		this.id=id;
 		this.nom = nom;
 		this.nbHabitants = nbHabitants;
+	}
+	
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(nom);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Ville other = (Ville) obj;
+		return Objects.equals(nom, other.nom);
 	}
 	/** Getter for nom
 	 * @return the nom

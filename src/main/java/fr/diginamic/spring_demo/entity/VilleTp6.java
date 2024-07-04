@@ -1,5 +1,7 @@
 package fr.diginamic.spring_demo.entity;
 
+import java.util.Objects;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -38,6 +40,24 @@ public class VilleTp6 {
 		this.nbHabitants = nbHabitants;
 	}
 	
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, nbHabitants, nom);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		VilleTp6 other = (VilleTp6) obj;
+		return id == other.id && nbHabitants == other.nbHabitants && Objects.equals(nom, other.nom);
+	}
+
 	/** Getter for id
 	 * @return the id
 	 */
