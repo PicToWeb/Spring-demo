@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.diginamic.spring_demo.entity.Ville;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/villes")
@@ -83,7 +85,13 @@ public class VilleControleur {
 	}
 	
 	@PostMapping
-	public ResponseEntity<String> insererVille(@RequestBody Ville nvVille) {
+	public ResponseEntity<String> insererVille(@Valid @RequestBody Ville nvVille,BindingResult result) {
+		
+	//	Validator.verif(result);
+		
+		if(result.hasErrors()){
+			return ResponseEntity.badRequest().body("Les données passées en param sont incorrectes");
+		}
 		
 		Ville ville = extraireVilleParId(nvVille.getId());
 		if(ville == null) {
@@ -94,7 +102,12 @@ public class VilleControleur {
 	}
 	
 	@PutMapping
-	public ResponseEntity<String> modifierVille(@RequestBody Ville editVille){
+	public ResponseEntity<String> modifierVille(@Valid @RequestBody Ville editVille,BindingResult result){
+		
+		if(result.hasErrors()){
+			return ResponseEntity.badRequest().body("Les données passées en param sont incorrectes");
+		}
+		
 		Ville ville = extraireVilleParId(editVille.getId());
 		if(ville != null) {
 			ville.setNom(editVille.getNom());
