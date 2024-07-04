@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.diginamic.spring_demo.dao.VilleDao;
+import fr.diginamic.spring_demo.dto.VilleDto;
 import fr.diginamic.spring_demo.entity.VilleTp6;
 import jakarta.annotation.PostConstruct;
 
@@ -15,6 +16,9 @@ public class VilleService {
 
 	@Autowired
 	private VilleDao villeDao;
+	
+	@Autowired
+	private DepartementService departementService;
 	
 	private List<VilleTp6> liste = new ArrayList<>();
 	
@@ -25,12 +29,19 @@ public class VilleService {
 	}
 
 	public List<VilleTp6> extractVilles(){
+		
 		return villeDao.extractVilles();
 	}
 	
+	public VilleDto convertirVilleDto(VilleTp6 ville) {
+		if(ville != null) {
+			return new VilleDto(ville.getId(),ville.getNom(),ville.getDepartement().getNom());
+		}
+		return null;
+	}
 	
 	public VilleTp6 extractVilleId(int idVille) {
-		return liste.stream().filter(v->v.getId() == idVille).findFirst().orElse(null);
+		return villeDao.extractVille(idVille);
 	}
 	
 	public VilleTp6 extractVilleNom(String nomVille) {
@@ -39,6 +50,8 @@ public class VilleService {
 	
 	
 	public void insertVille(VilleTp6 ville) {
+		
+		ville.setDepartement(departementService.extractDepId(1));
 		villeDao.persistVille(ville);
 		liste.add(ville);
 	}

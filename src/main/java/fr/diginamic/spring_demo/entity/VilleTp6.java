@@ -3,6 +3,7 @@ package fr.diginamic.spring_demo.entity;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -68,7 +69,7 @@ public class VilleTp6 {
 
 	@Override
 	public String toString() {
-		return  getId() + " " + getNom() + " " + getNbHabitants() + " \n";
+		return  getId() + " " + getNom() + " " + getNbHabitants()  + " \n";
 	}
 
 	/** Getter for id
@@ -102,6 +103,21 @@ public class VilleTp6 {
 	public void setNbHabitants(int nbHabitants) {
 		this.nbHabitants = nbHabitants;
 	}
+
+	/** Getter for departement
+	 * @return the departement
+	 */
+	public DepartementTp6 getDepartement() {
+		return departement;
+	}
+
+	/** Setter for departement
+	 * @param departement the departement to set
+	 */
+	public void setDepartement(DepartementTp6 departement) {
+		this.departement = departement;
+	}
+	
 	
 	
 

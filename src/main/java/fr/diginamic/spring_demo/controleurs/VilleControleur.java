@@ -1,6 +1,7 @@
 package fr.diginamic.spring_demo.controleurs;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import fr.diginamic.spring_demo.dto.VilleDto;
 import fr.diginamic.spring_demo.entity.VilleTp6;
 import fr.diginamic.spring_demo.services.VilleService;
 import jakarta.validation.Valid;
@@ -32,8 +34,9 @@ public class VilleControleur {
 	 * @return Liste des villes
 	 */
 	@GetMapping
-	public List<VilleTp6> extraireVilles() {
-		return villeService.extractVilles();
+	public List<VilleDto> extraireVilles() {
+		List<VilleTp6> villes =  villeService.extractVilles();
+		return villes.stream().map(ville -> villeService.convertirVilleDto(ville)).collect(Collectors.toList());
 	}
 	/**
 	 * villes/rechercheParId?id=1

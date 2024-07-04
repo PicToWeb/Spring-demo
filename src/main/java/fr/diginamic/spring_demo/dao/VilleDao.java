@@ -22,8 +22,18 @@ public class VilleDao {
 	}
 	
 	public List<VilleTp6> extractVilles(){
-		TypedQuery<VilleTp6> query = em.createQuery("SELECT v FROM VilleTp6 v",VilleTp6.class);
+		TypedQuery<VilleTp6> query = em.createQuery("SELECT v FROM VilleTp6 v JOIN FETCH v.departement",VilleTp6.class);
 		return query.getResultList();
+	}
+	
+	public VilleTp6 extractVille(int idVille) {
+		TypedQuery<VilleTp6> query = em.createQuery("SELECT v FROM VilleTp6 v JOIN FETCH v.departement WHERE v.id=:idVille",VilleTp6.class);
+		 query.setParameter("idVille", idVille);
+		 List<VilleTp6> ville = query.getResultList();
+		 if(ville.size()>0) {
+			 return query.getSingleResult();
+		 }
+		 return null;
 	}
 	
 	@Transactional
