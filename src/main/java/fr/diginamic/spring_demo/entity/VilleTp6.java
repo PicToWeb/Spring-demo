@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,6 +23,10 @@ public class VilleTp6 {
 	
 	/** nbHabitants */
 	private int nbHabitants;
+	
+	@ManyToOne
+	@JoinColumn(name="id_dep")
+	private DepartementTp6 departement;
 	
 	
 	
@@ -43,7 +49,7 @@ public class VilleTp6 {
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, nbHabitants, nom);
+		return Objects.hash(nom);
 	}
 
 	@Override
@@ -55,7 +61,14 @@ public class VilleTp6 {
 		if (getClass() != obj.getClass())
 			return false;
 		VilleTp6 other = (VilleTp6) obj;
-		return id == other.id && nbHabitants == other.nbHabitants && Objects.equals(nom, other.nom);
+		return  Objects.equals(nom, other.nom);
+	}
+	
+	
+
+	@Override
+	public String toString() {
+		return  getId() + " " + getNom() + " " + getNbHabitants() + " \n";
 	}
 
 	/** Getter for id
