@@ -101,15 +101,16 @@ public class VilleControleur {
 		return ResponseEntity.badRequest().body("La ville existe déjà");
 	}
 	
-	@PutMapping
-	public ResponseEntity<String> modifierVille(@Valid @RequestBody Ville editVille,BindingResult result){
+	@PutMapping("/{id}")
+	public ResponseEntity<String> modifierVille(@Valid @PathVariable int id,@RequestBody Ville editVille,BindingResult result){
 		
 		if(result.hasErrors()){
 			return ResponseEntity.badRequest().body("Les données passées en param sont incorrectes");
 		}
 		
-		Ville ville = extraireVilleParId(editVille.getId());
+		Ville ville = extraireVilleParId(id);
 		if(ville != null) {
+			ville.setId(editVille.getId());
 			ville.setNom(editVille.getNom());
 			ville.setNbHabitants(editVille.getNbHabitants());
 			return ResponseEntity.ok("Succes!");
