@@ -2,6 +2,8 @@ package fr.diginamic.spring_demo.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import fr.diginamic.spring_demo.entity.DepartementTp6;
 import fr.diginamic.spring_demo.entity.VilleTp6;
 import fr.diginamic.spring_demo.repositories.VilleRepository;
 
@@ -45,7 +47,8 @@ public class VilleService {
 		VilleTp6 villeTrouve = findByNom(ville.getNom());
 
 		if (villeTrouve == null) {
-			ville.setDepartement(departementService.findById(ville.getDepartement().getId()));
+			departementService.insertDepartement(ville.getDepartement());
+			ville.setDepartement(departementService.extractDepId(ville.getDepartement().getId()));
 			villeRepository.save(ville);		
 		}
 		

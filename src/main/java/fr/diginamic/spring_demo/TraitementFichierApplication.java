@@ -34,7 +34,7 @@ public class TraitementFichierApplication implements CommandLineRunner{
 		List<VilleTp6> ville = RecensementUtils.lire(filePath);
 		
 		Collections.sort(ville, new PopComparateur(false));
-		ville.stream().limit(1000).forEach(v-> villeService.insertVille(v));
+		ville.stream().limit(10).forEach(v-> villeService.insertVille(v));
 
 	}
 

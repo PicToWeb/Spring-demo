@@ -89,40 +89,40 @@ public class DepartementControleur {
 	}
 	
 	
-	/**
-	 * @param id
-	 * @param editDepartement
-	 * @param result
-	 * @return
-	 */
-	@PutMapping("/{id}")
-	public ResponseEntity<String> modifierDepartement(@Valid @PathVariable String id,@RequestBody DepartementTp6 editDepartement,BindingResult result){
-		if(result.hasErrors()){
-			return ResponseEntity.badRequest().body("Les données passées sont incorrectes");
-		}
-		DepartementTp6 departement =departementService.extractDepId(id);
-		if(departement != null) {
-			departementService.modifierDepartement(editDepartement, id);
-			return ResponseEntity.ok(departementService.extractDepartement().toString());
-		}
-		return ResponseEntity.badRequest().body("Le département n'existe pas");
-	}
-	
-	
-	/**
-	 * @param id
-	 * @return
-	 */
-	@DeleteMapping("/{id}")
-	public ResponseEntity<String> supprimerDepartement(@PathVariable String id){
-		DepartementTp6 ville = departementService.extractDepId(id);
-		if(ville != null) {
-			departementService.supprimerDepartement(id);
-			return ResponseEntity.ok(departementService.extractDepartement().toString());
-		}
-		return ResponseEntity.badRequest().body("Le département n'existe pas !");
-		
-	}
+//	/**
+//	 * @param id
+//	 * @param editDepartement
+//	 * @param result
+//	 * @return
+//	 */
+//	@PutMapping("/{id}")
+//	public ResponseEntity<String> modifierDepartement(@Valid @PathVariable String id,@RequestBody DepartementTp6 editDepartement,BindingResult result){
+//		if(result.hasErrors()){
+//			return ResponseEntity.badRequest().body("Les données passées sont incorrectes");
+//		}
+//		DepartementTp6 departement =departementService.extractDepId(id);
+//		if(departement != null) {
+//			departementService.modifierDepartement(editDepartement, id);
+//			return ResponseEntity.ok(departementService.extractDepartement().toString());
+//		}
+//		return ResponseEntity.badRequest().body("Le département n'existe pas");
+//	}
+//	
+//	
+//	/**
+//	 * @param id
+//	 * @return
+//	 */
+//	@DeleteMapping("/{id}")
+//	public ResponseEntity<String> supprimerDepartement(@PathVariable String id){
+//		DepartementTp6 ville = departementService.extractDepId(id);
+//		if(ville != null) {
+//			departementService.supprimerDepartement(id);
+//			return ResponseEntity.ok(departementService.extractDepartement().toString());
+//		}
+//		return ResponseEntity.badRequest().body("Le département n'existe pas !");
+//		
+//	}
 	
 
 }

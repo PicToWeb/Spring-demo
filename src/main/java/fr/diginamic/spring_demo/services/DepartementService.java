@@ -33,7 +33,7 @@ public class DepartementService {
 	
 		
 	public DepartementTp6 extractDepId(String idDep) {
-		return liste.stream().filter(v->v.getId() == idDep).findFirst().orElse(null);
+		return liste.stream().filter(v->v.getId() != null && v.getId().equals(idDep)).findFirst().orElse(null);
 	}
 	
 	public DepartementTp6 findById(String id) {
@@ -46,17 +46,23 @@ public class DepartementService {
 	
 	
 	public void insertDepartement(DepartementTp6 departement) {
-		DepartementTp6 depNom = extractDepNom(departement.getNom());
+		DepartementTp6 depNom = extractDepId(departement.getId());
+		
 		if(depNom == null) {
 			departementRepository.save(departement);
 			liste.add(departement);
 		}
 	}
 	
+	
+	
+	
+	
 //	public void modifierDepartement(DepartementTp6 departement,String id) {
 //		DepartementTp6 depNom = extractDepNom(departement.getNom());
 //		if(depNom == null) {
 //			departementDao.modifierDepartement(id, departement);
+//			departementRepository.
 //		}
 //	}
 //	

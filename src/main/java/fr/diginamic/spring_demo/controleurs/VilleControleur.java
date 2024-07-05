@@ -72,45 +72,56 @@ public class VilleControleur {
 
 	}
 
-	/**
-	 * @param id
-	 * @param editVille
-	 * @param result
-	 * @return
-	 */
-	@PutMapping("/{id}")
-	public ResponseEntity<String> modifierVille(@Valid @PathVariable int id, @RequestBody VilleTp6 editVille,
-			BindingResult result) {
-		
-		if (result.hasErrors()) {
-			return ResponseEntity.badRequest().body("Les données passées sont incorrectes");
-		}
-		
-		VilleTp6 ville = villeService.findById(id);
-		if (ville != null) {
-			villeService.modifierVille(editVille, id);
-			return ResponseEntity.ok(villeService.extractVilles().toString());
-		}
-		
-		return ResponseEntity.badRequest().body("La ville n'existe pas");
-	}
-
-	/**
-	 * @param id
-	 * @return
-	 */
-	@DeleteMapping("/{id}")
-	public ResponseEntity<String> deleteVille(@PathVariable int id) {
-		
-		VilleTp6 ville = villeService.extractVilleId(id);
-		if (ville != null) {
-			villeService.supprimerVille(id);
-			return ResponseEntity.ok(villeService.extractVilles().toString());
-		}
-		
-		return ResponseEntity.badRequest().body("La ville n'existe pas !");
-
-	}
+//	/**
+//	 * @param id
+//	 * @param editVille
+//	 * @param result
+//	 * @return
+//	 */
+//	@PutMapping("/{id}")
+//	public ResponseEntity<String> modifierVille(@Valid @PathVariable int id, @RequestBody VilleTp6 editVille,
+//			BindingResult result) {
+//		
+//		if (result.hasErrors()) {
+//			return ResponseEntity.badRequest().body("Les données passées sont incorrectes");
+//		}
+//		
+//		VilleTp6 ville = villeService.findById(id);
+//		if (ville != null) {
+//			villeService.modifierVille(editVille, id);
+//			return ResponseEntity.ok(villeService.extractVilles().toString());
+//		}
+//		
+//		return ResponseEntity.badRequest().body("La ville n'existe pas");
+//	}
+//
+//	/**
+//	 * @param id
+//	 * @return
+//	 */
+//	@DeleteMapping("/{id}")
+//	public ResponseEntity<String> deleteVille(@PathVariable int id) {
+//		
+//		VilleTp6 ville = villeService.extractVilleId(id);
+//		if (ville != null) {
+//			villeService.supprimerVille(id);
+//			return ResponseEntity.ok(villeService.extractVilles().toString());
+//		}
+//		
+//		return ResponseEntity.badRequest().body("La ville n'existe pas !");
+//
+//	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 //	private List<Ville> liste = List.of(new Ville("Montpellier", 350000), new Ville("Nimes", 260000));
 //	private List<Ville> liste = new ArrayList<>();
