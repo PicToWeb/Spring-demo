@@ -2,6 +2,7 @@ package fr.diginamic.spring_demo.entity;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,7 +17,7 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name="ville")
-public class VilleTp6 {
+public class VilleTp6 implements EnsemblePop {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -33,6 +34,7 @@ public class VilleTp6 {
 	
 	@ManyToOne
 	@JoinColumn(name="id_dep")
+	@JsonBackReference
 	private DepartementTp6 departement;
 	
 	
@@ -100,6 +102,7 @@ public class VilleTp6 {
 	/** Getter for nbHabitants
 	 * @return the nbHabitants
 	 */
+	@Override
 	public int getNbHabitants() {
 		return nbHabitants;
 	}
@@ -123,6 +126,7 @@ public class VilleTp6 {
 	public void setDepartement(DepartementTp6 departement) {
 		this.departement = departement;
 	}
+
 	
 	
 	

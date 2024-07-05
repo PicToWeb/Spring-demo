@@ -1,20 +1,15 @@
 package fr.diginamic.spring_demo.services;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import fr.diginamic.spring_demo.dao.VilleDao;
-import fr.diginamic.spring_demo.dto.VilleDTO;
 import fr.diginamic.spring_demo.entity.VilleTp6;
+import fr.diginamic.spring_demo.repositories.VilleRepository;
 
 @Service
 public class VilleService {
 
 	@Autowired
-	private VilleDao villeDao;
+	private VilleRepository villeRepository;
 
 	@Autowired
 	private DepartementService departementService;
@@ -25,46 +20,44 @@ public class VilleService {
 //		this.liste = extractVilles();
 //	}
 
-	public List<VilleDTO> extractVilles() {
-		List<VilleTp6> villes = villeDao.extractVilles();
-		return villes.stream().map(v -> convertirVilleDto(v)).collect(Collectors.toList());
+	public Iterable<VilleTp6> extractVilles() {
+		return villeRepository.findAll();
+//		return villes.stream().map(v -> convertirVilleDto(v)).collect(Collectors.toList());
 	}
 
-	public VilleDTO convertirVilleDto(VilleTp6 ville) {
-		if (ville != null) {
-			return new VilleDTO(ville.getId(), ville.getNom(), ville.getDepartement().getNom());
-		}
-		return null;
+//	public VilleDTO convertirVilleDto(VilleTp6 ville) {
+//		if (ville != null) {
+//			return new VilleDTO(ville.getId(), ville.getNom(), ville.getDepartement().getNom());
+//		}
+//		return null;
+//	}
+
+	public VilleTp6 findById(int idVille) {
+		return villeRepository.findById(idVille).orElse(null);
 	}
 
-	public VilleTp6 extractVilleId(int idVille) {
-		return villeDao.extractVilleId(idVille);
+	public VilleTp6 findByNom(String nomVille) {
+		return villeRepository.findByNom(nomVille);
 	}
 
-	public VilleTp6 extractVilleNom(String nomVille) {
-		return villeDao.extractVilleNom(nomVille);
-	}
-
-	public String insertVille(VilleTp6 ville) {
+	public void insertVille(VilleTp6 ville) {
 	
-		VilleTp6 villeTrouve = extractVilleNom(ville.getNom());
-		
+		VilleTp6 villeTrouve = findByNom(ville.getNom());
+
 		if (villeTrouve == null) {
-			departementService.insertDepartement(ville.getDepartement());
-			villeDao.persistVille(ville);
-			return extractVilles().toString();
+			ville.setDepartement(departementService.findById(ville.getDepartement().getId()));
+			villeRepository.save(ville);		
 		}
 		
-		return "La ville " + villeTrouve.getNom() + " existe déjà \n " + extractVilles().toString();
 	}
 
-	public void modifierVille(VilleTp6 ville, int id) {
-		departementService.modifierDepartement(ville.getDepartement(), ville.getDepartement().getId());
-		villeDao.modifierVille(id, ville);
-	}
-
-	public void supprimerVille(int idVille) {
-		villeDao.supprimerVille(idVille);
-	}
+//	public void modifierVille(VilleTp6 ville, int id) {
+//		departementService.modifierDepartement(ville.getDepartement(), ville.getDepartement().getId());
+//		villeDao.modifierVille(id, ville);
+//	}
+//
+//	public void supprimerVille(int idVille) {
+//		villeDao.supprimerVille(idVille);
+//	}
 
 }

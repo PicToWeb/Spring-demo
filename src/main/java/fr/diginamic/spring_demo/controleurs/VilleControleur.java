@@ -42,7 +42,7 @@ public class VilleControleur {
 	 */
 	@GetMapping("/rechercheParId")
 	public ResponseEntity<VilleTp6> extraireVilleParId(@RequestParam int id) {
-		return ResponseEntity.ok(villeService.extractVilleId(id));
+		return ResponseEntity.ok(villeService.findById(id));
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class VilleControleur {
 	 */
 	@GetMapping("/rechercheParNom/{nom}")
 	public ResponseEntity<VilleTp6> extraireVilleParNom(@PathVariable String nom) {
-		return ResponseEntity.ok(villeService.extractVilleNom(nom));
+		return ResponseEntity.ok(villeService.findByNom(nom));
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class VilleControleur {
 			return ResponseEntity.badRequest().body("Les entrées ne sont pas exactes");
 		}
 		
-		return ResponseEntity.ok(villeService.insertVille(nvVille));
+		return ResponseEntity.ok(villeService.extractVilles().toString());
 
 	}
 
@@ -86,7 +86,7 @@ public class VilleControleur {
 			return ResponseEntity.badRequest().body("Les données passées sont incorrectes");
 		}
 		
-		VilleTp6 ville = villeService.extractVilleId(id);
+		VilleTp6 ville = villeService.findById(id);
 		if (ville != null) {
 			villeService.modifierVille(editVille, id);
 			return ResponseEntity.ok(villeService.extractVilles().toString());

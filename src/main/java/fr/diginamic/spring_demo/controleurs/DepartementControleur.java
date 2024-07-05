@@ -55,7 +55,7 @@ public class DepartementControleur {
 	 * @return
 	 */
 	@GetMapping("/rechercheParId")
-	public ResponseEntity<DepartementTp6> extraireDepParId(@RequestParam int id) {
+	public ResponseEntity<DepartementTp6> extraireDepParId(@RequestParam String id) {
 		return  ResponseEntity.ok(departementService.extractDepId(id));
 	}
 	
@@ -96,7 +96,7 @@ public class DepartementControleur {
 	 * @return
 	 */
 	@PutMapping("/{id}")
-	public ResponseEntity<String> modifierDepartement(@Valid @PathVariable int id,@RequestBody DepartementTp6 editDepartement,BindingResult result){
+	public ResponseEntity<String> modifierDepartement(@Valid @PathVariable String id,@RequestBody DepartementTp6 editDepartement,BindingResult result){
 		if(result.hasErrors()){
 			return ResponseEntity.badRequest().body("Les données passées sont incorrectes");
 		}
@@ -114,7 +114,7 @@ public class DepartementControleur {
 	 * @return
 	 */
 	@DeleteMapping("/{id}")
-	public ResponseEntity<String> supprimerDepartement(@PathVariable int id){
+	public ResponseEntity<String> supprimerDepartement(@PathVariable String id){
 		DepartementTp6 ville = departementService.extractDepId(id);
 		if(ville != null) {
 			departementService.supprimerDepartement(id);

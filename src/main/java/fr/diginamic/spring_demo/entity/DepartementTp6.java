@@ -7,19 +7,17 @@ import java.util.Set;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
 
 @Entity
 @Table(name="departement")
 public class DepartementTp6 {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private String id;
 	
 	private String nom;
 	
@@ -33,20 +31,20 @@ public class DepartementTp6 {
 	public DepartementTp6() {
 	}
 	
-	
 
-
+	/** Constructor
+	 * @param nom
+	 */
+	public DepartementTp6(String id,String nom) {
+		this.id=id;
+		this.nom = nom;
+	}
 
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, nom);
 	}
-
-
-
-
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -59,11 +57,6 @@ public class DepartementTp6 {
 		DepartementTp6 other = (DepartementTp6) obj;
 		return id == other.id && Objects.equals(nom, other.nom);
 	}
-
-
-
-
-
 
 	@Override
 	public String toString() {
@@ -83,11 +76,21 @@ public class DepartementTp6 {
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
+	
+	
+
+	/** Setter for id
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
+
 
 	/** Getter for id
 	 * @return the id
 	 */
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
