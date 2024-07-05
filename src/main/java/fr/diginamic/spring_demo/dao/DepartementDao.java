@@ -19,7 +19,7 @@ public class DepartementDao {
 	private EntityManager em;
 	
 	@Transactional
-	public void persistVille(DepartementTp6 departement) {
+	public void persistDepartement(DepartementTp6 departement) {
 		em.persist(departement);
 	}
 	

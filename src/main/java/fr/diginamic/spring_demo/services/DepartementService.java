@@ -1,6 +1,7 @@
 package fr.diginamic.spring_demo.services;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,23 +29,29 @@ public class DepartementService {
 		return departementDao.extractDepartement();
 	}
 	
-	
+		
 	public DepartementTp6 extractDepId(int idDep) {
 		return liste.stream().filter(v->v.getId() == idDep).findFirst().orElse(null);
 	}
 	
 	public DepartementTp6 extractDepNom(String nomDep) {
-		return liste.stream().filter(v->v.getNom().equals(nomDep)).findFirst().orElse(null);
+		return liste.stream().filter(v->v.getNom() !=null && v.getNom().equals(nomDep)).findFirst().orElse(null);
 	}
 	
 	
 	public void insertDepartement(DepartementTp6 departement) {
-		departementDao.persistVille(departement);
-		liste.add(departement);
+		DepartementTp6 depNom = extractDepNom(departement.getNom());
+		if(depNom == null) {
+			departementDao.persistDepartement(departement);
+			liste.add(departement);
+		}
 	}
 	
 	public void modifierDepartement(DepartementTp6 departement,int id) {
-		departementDao.modifierDepartement(id, departement);
+		DepartementTp6 depNom = extractDepNom(departement.getNom());
+		if(depNom == null) {
+			departementDao.modifierDepartement(id, departement);
+		}
 	}
 	
 	public void supprimerDepartement(int idDepartement) {

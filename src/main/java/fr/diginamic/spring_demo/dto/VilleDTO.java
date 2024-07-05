@@ -1,6 +1,6 @@
 package fr.diginamic.spring_demo.dto;
 
-public class VilleDto {
+public class VilleDTO {
 
 	private int id;
 	
@@ -13,14 +13,21 @@ public class VilleDto {
 	 * @param name
 	 * @param departementName
 	 */
-	public VilleDto(int id, String name, String departementName) {
+	public VilleDTO(int id, String name, String departementName) {
 		this.id = id;
 		this.name = name;
 		this.departementName = departementName;
 	}
 	
-	public VilleDto() {
+	public VilleDTO() {
 		
+	}
+	
+	
+
+	@Override
+	public String toString() {
+		return getId() + " " + getName() + " " + getDepartementName() + " \n";
 	}
 
 	/** Getter for id

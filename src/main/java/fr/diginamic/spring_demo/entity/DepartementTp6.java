@@ -23,7 +23,7 @@ public class DepartementTp6 {
 	
 	private String nom;
 	
-	@OneToMany(fetch = FetchType.EAGER,mappedBy="departement", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER,mappedBy="departement", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private Set<VilleTp6>villes = new HashSet<>();
 	
 
@@ -35,10 +35,16 @@ public class DepartementTp6 {
 	
 	
 
+
+
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(nom);
+		return Objects.hash(id, nom);
 	}
+
+
+
 
 
 
@@ -51,8 +57,11 @@ public class DepartementTp6 {
 		if (getClass() != obj.getClass())
 			return false;
 		DepartementTp6 other = (DepartementTp6) obj;
-		return Objects.equals(nom, other.nom);
+		return id == other.id && Objects.equals(nom, other.nom);
 	}
+
+
+
 
 
 

@@ -1,7 +1,7 @@
 package fr.diginamic.spring_demo.controleurs;
 
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import fr.diginamic.spring_demo.dto.DepartementDTO;
+import fr.diginamic.spring_demo.dto.VilleDTO;
 import fr.diginamic.spring_demo.entity.DepartementTp6;
 import fr.diginamic.spring_demo.services.DepartementService;
 import jakarta.validation.Valid;
@@ -32,8 +34,19 @@ public class DepartementControleur {
 	 * @return Liste des départements
 	 */
 	@GetMapping
-	public List<DepartementTp6> extraireVilles() {
-		return departementService.extractDepartement();
+	public List<DepartementDTO> extraireVilles() {
+		
+		List<DepartementTp6> departList = departementService.extractDepartement();
+		
+		return departList.stream().map(dep -> convertirDepartementDto(dep)).collect(Collectors.toList());
+		
+	}
+	
+	public DepartementDTO convertirDepartementDto(DepartementTp6 departement) {
+		if (departement != null) {
+			return new DepartementDTO(departement.getId(), departement.getNom(),departement.getVilles().stream().map(v-> new VilleDTO(v.getId(),v.getNom(),v.getDepartement().getNom())).toList());
+		}
+		return null;
 	}
 	/**
 	 * departements/rechercheParId?id=1

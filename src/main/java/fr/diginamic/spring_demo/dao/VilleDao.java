@@ -26,11 +26,21 @@ public class VilleDao {
 		return query.getResultList();
 	}
 	
-	public VilleTp6 extractVille(int idVille) {
+	public VilleTp6 extractVilleId(int idVille) {
 		TypedQuery<VilleTp6> query = em.createQuery("SELECT v FROM VilleTp6 v JOIN FETCH v.departement WHERE v.id=:idVille",VilleTp6.class);
 		 query.setParameter("idVille", idVille);
-		 List<VilleTp6> ville = query.getResultList();
-		 if(ville.size()>0) {
+		 List<VilleTp6> villes = query.getResultList();
+		 if(villes.size()>0) {
+			 return query.getSingleResult();
+		 }
+		 return null;
+	}
+	
+	public VilleTp6 extractVilleNom(String nomVille) {
+		TypedQuery<VilleTp6> query = em.createQuery("SELECT v FROM VilleTp6 v JOIN FETCH v.departement WHERE v.nom=:nomVille",VilleTp6.class);
+		 query.setParameter("nomVille", nomVille);
+		 List<VilleTp6> villes = query.getResultList();
+		 if(villes.size()>0) {
 			 return query.getSingleResult();
 		 }
 		 return null;
@@ -41,6 +51,7 @@ public class VilleDao {
 		VilleTp6 villeFromDb = em.find(VilleTp6.class, idVille);
 		villeFromDb.setNom(villeModifiee.getNom());
 		villeFromDb.setNbHabitants(villeModifiee.getNbHabitants());
+		villeFromDb.setDepartement(villeModifiee.getDepartement());
 	}
 	
 	@Transactional
