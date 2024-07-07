@@ -2,12 +2,10 @@ package fr.diginamic.spring_demo.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import fr.diginamic.spring_demo.entity.DepartementTp6;
 import fr.diginamic.spring_demo.repositories.DepartementRepository;
 import jakarta.annotation.PostConstruct;
@@ -32,11 +30,11 @@ public class DepartementService {
 	}
 	
 		
-	public DepartementTp6 extractDepId(String idDep) {
-		return liste.stream().filter(v->v.getId() != null && v.getId().equals(idDep)).findFirst().orElse(null);
+	public DepartementTp6 extractDepCode(String codeDep) {
+		return liste.stream().filter(v->v.getCodeDep() != null && v.getCodeDep().equals(codeDep)).findFirst().orElse(null);
 	}
 	
-	public DepartementTp6 findById(String id) {
+	public DepartementTp6 findById(int id) {
 		return departementRepository.findById(id).orElse(null);
 	}
 	
@@ -46,9 +44,9 @@ public class DepartementService {
 	
 	
 	public void insertDepartement(DepartementTp6 departement) {
-		DepartementTp6 depNom = extractDepId(departement.getId());
+		DepartementTp6 departementEnBase = extractDepCode(departement.getCodeDep());
 		
-		if(depNom == null) {
+		if(departementEnBase == null) {
 			departementRepository.save(departement);
 			liste.add(departement);
 		}
@@ -56,19 +54,19 @@ public class DepartementService {
 	
 	
 	
+	public void modifierDepartement(DepartementTp6 departement,int id) {
+		DepartementTp6 departementEnBase = findById(id);
+		if(departementEnBase != null) {
+			departementEnBase.setCodeDep(departement.getCodeDep());
+			departementEnBase.setNom(departement.getNom());
+			departementRepository.save(departementEnBase);
+		}
+	}
 	
 	
-//	public void modifierDepartement(DepartementTp6 departement,String id) {
-//		DepartementTp6 depNom = extractDepNom(departement.getNom());
-//		if(depNom == null) {
-//			departementDao.modifierDepartement(id, departement);
-//			departementRepository.
-//		}
-//	}
-//	
-//	public void supprimerDepartement(String idDepartement) {
-//		departementDao.supprimerDepartement(idDepartement);
-//	}
+	public void supprimerDepartement(int idDepartement) {
+		departementRepository.deleteById(idDepartement);
+	}
 	
 	
 	

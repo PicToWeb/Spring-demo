@@ -1,5 +1,7 @@
 package fr.diginamic.spring_demo.controleurs;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -44,6 +46,44 @@ public class VilleControleur {
 	public ResponseEntity<VilleTp6> extraireVilleParId(@RequestParam int id) {
 		return ResponseEntity.ok(villeService.findById(id));
 	}
+	
+	/**
+	 * villes/rechercheParId?id=1
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("/rechercheNomCommence/{nom}")
+	public ResponseEntity<String> extraireVilleCommencePar(@PathVariable String nom) {
+		
+		
+		List<VilleTp6> villeListe = villeService.findByNomStartingWith(nom);
+		if (villeListe.size()>0) {
+			
+			return ResponseEntity.ok(villeService.findByNomStartingWith(nom).toString());
+		}
+		
+		return ResponseEntity.badRequest().body("Aucune ville ne correspond");
+	}
+	
+	/**
+	 * villes/rechercheParId?id=1
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("/rechercheVillePopMin/{nb}")
+	public ResponseEntity<String> extraireVillePopMin(@PathVariable int nb) {
+		
+		
+		List<VilleTp6> villeListe = villeService.findByNbHabitantsGreaterThan(nb);
+		if (villeListe.size()>0) {
+			
+			return ResponseEntity.ok(villeService.findByNbHabitantsGreaterThan(nb).toString());
+		}
+		
+		return ResponseEntity.badRequest().body("Aucune ville ne correspond");
+	}
 
 	/**
 	 * villes/rechercheParNom/Montpellier
@@ -67,50 +107,51 @@ public class VilleControleur {
 		if (result.hasErrors()) {
 			return ResponseEntity.badRequest().body("Les entrées ne sont pas exactes");
 		}
+		villeService.insertVille(nvVille);
 		
 		return ResponseEntity.ok(villeService.extractVilles().toString());
 
 	}
 
-//	/**
-//	 * @param id
-//	 * @param editVille
-//	 * @param result
-//	 * @return
-//	 */
-//	@PutMapping("/{id}")
-//	public ResponseEntity<String> modifierVille(@Valid @PathVariable int id, @RequestBody VilleTp6 editVille,
-//			BindingResult result) {
-//		
-//		if (result.hasErrors()) {
-//			return ResponseEntity.badRequest().body("Les données passées sont incorrectes");
-//		}
-//		
-//		VilleTp6 ville = villeService.findById(id);
-//		if (ville != null) {
-//			villeService.modifierVille(editVille, id);
-//			return ResponseEntity.ok(villeService.extractVilles().toString());
-//		}
-//		
-//		return ResponseEntity.badRequest().body("La ville n'existe pas");
-//	}
-//
-//	/**
-//	 * @param id
-//	 * @return
-//	 */
-//	@DeleteMapping("/{id}")
-//	public ResponseEntity<String> deleteVille(@PathVariable int id) {
-//		
-//		VilleTp6 ville = villeService.extractVilleId(id);
-//		if (ville != null) {
-//			villeService.supprimerVille(id);
-//			return ResponseEntity.ok(villeService.extractVilles().toString());
-//		}
-//		
-//		return ResponseEntity.badRequest().body("La ville n'existe pas !");
-//
-//	}
+	/**
+	 * @param id
+	 * @param editVille
+	 * @param result
+	 * @return
+	 */
+	@PutMapping("/{id}")
+	public ResponseEntity<String> modifierVille(@Valid @PathVariable int id, @RequestBody VilleTp6 editVille,
+			BindingResult result) {
+		
+		if (result.hasErrors()) {
+			return ResponseEntity.badRequest().body("Les données passées sont incorrectes");
+		}
+		
+		VilleTp6 ville = villeService.findById(id);
+		if (ville != null) {
+			villeService.modifierVille(editVille, id);
+			return ResponseEntity.ok(villeService.extractVilles().toString());
+		}
+		
+		return ResponseEntity.badRequest().body("La ville n'existe pas");
+	}
+
+	/**
+	 * @param id
+	 * @return
+	 */
+	@DeleteMapping("/{id}")
+	public ResponseEntity<String> deleteVille(@PathVariable int id) {
+		
+		VilleTp6 ville = villeService.findById(id);
+		if (ville != null) {
+			villeService.supprimerVille(id);
+			return ResponseEntity.ok(villeService.extractVilles().toString());
+		}
+		
+		return ResponseEntity.badRequest().body("La ville n'existe pas !");
+
+	}
 	
 	
 	

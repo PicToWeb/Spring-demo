@@ -21,11 +21,11 @@ public class TraitementFichierApplication implements CommandLineRunner{
 	private VilleService villeService;
 	
 	public static void main(String[] args) {
-		//SpringApplication.run(SpringDemoApplication.class, args);
+		SpringApplication.run(SpringDemoApplication.class, args);
 		
-		SpringApplication application = new SpringApplication(TraitementFichierApplication.class);
-		application.setWebApplicationType(WebApplicationType.NONE);
-		application.run(args);
+//		SpringApplication application = new SpringApplication(TraitementFichierApplication.class);
+//		application.setWebApplicationType(WebApplicationType.NONE);
+//		application.run(args);
 		
 		
 	}
@@ -39,7 +39,7 @@ public class TraitementFichierApplication implements CommandLineRunner{
 		int limite = 1000;
 		final int[] compteur = {0}; 
 
-		ville.stream().forEach(v -> {
+		ville.stream().limit(1007).forEach(v -> {
 		    if (compteur[0] < limite) {
 		        int result = villeService.insertVille(v);
 		        if (result > 0) {

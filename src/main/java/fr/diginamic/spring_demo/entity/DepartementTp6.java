@@ -7,17 +7,21 @@ import java.util.Set;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Max;
 
 @Entity
 @Table(name="departement")
 public class DepartementTp6 {
 
 	@Id
-	private String id;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id;
+	
+	private String codeDep;
 	
 	private String nom;
 	
@@ -35,8 +39,8 @@ public class DepartementTp6 {
 	/** Constructor
 	 * @param nom
 	 */
-	public DepartementTp6(String id,String nom) {
-		this.id=id;
+	public DepartementTp6(String codeDep,String nom) {
+		this.codeDep=codeDep;
 		this.nom = nom;
 	}
 
@@ -60,7 +64,15 @@ public class DepartementTp6 {
 
 	@Override
 	public String toString() {
-		return getId() + " " +  getNom()  +  " \n";
+		return getId() + " " + getCodeDep() + " " + getNom()  +  " \n";
+	}
+	
+
+	/** Getter for id
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
 	}
 
 	/** Getter for nom
@@ -77,22 +89,22 @@ public class DepartementTp6 {
 		this.nom = nom;
 	}
 	
-	
 
-	/** Setter for id
-	 * @param id the id to set
+	/** Getter for codeDep
+	 * @return the codeDep
 	 */
-	public void setId(String id) {
-		this.id = id;
+	public String getCodeDep() {
+		return codeDep;
 	}
 
 
-	/** Getter for id
-	 * @return the id
+	/** Setter for codeDep
+	 * @param codeDep the codeDep to set
 	 */
-	public String getId() {
-		return id;
+	public void setCodeDep(String codeDep) {
+		this.codeDep = codeDep;
 	}
+
 
 	/** Getter for villes
 	 * @return the villes

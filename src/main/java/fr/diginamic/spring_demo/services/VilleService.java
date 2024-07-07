@@ -1,9 +1,10 @@
 package fr.diginamic.spring_demo.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.diginamic.spring_demo.entity.DepartementTp6;
 import fr.diginamic.spring_demo.entity.VilleTp6;
 import fr.diginamic.spring_demo.repositories.VilleRepository;
 
@@ -41,29 +42,43 @@ public class VilleService {
 	public VilleTp6 findByNom(String nomVille) {
 		return villeRepository.findByNom(nomVille);
 	}
+	
+	public List<VilleTp6> findByNomStartingWith(String nomVille){
+		return villeRepository.findByNomStartingWith(nomVille);
+	}
+	
+	public List<VilleTp6> findByNbHabitantsGreaterThan(int popMin){
+		return villeRepository.findByNbHabitantsGreaterThan(popMin);
+	}
 		
 
 	public int insertVille(VilleTp6 ville) {
 	
 		int i=0;
-		VilleTp6 villeTrouve = findByNom(ville.getNom());
+		VilleTp6 villeEnBase = findByNom(ville.getNom());
 
-		if (villeTrouve == null) {
+		if (villeEnBase == null) {
 			departementService.insertDepartement(ville.getDepartement());
-			ville.setDepartement(departementService.extractDepId(ville.getDepartement().getId()));
+			ville.setDepartement(departementService.extractDepCode(ville.getDepartement().getCodeDep()));
 			villeRepository.save(ville);
 			i++;
 		}
 		return i;
 	}
 
-//	public void modifierVille(VilleTp6 ville, int id) {
-//		departementService.modifierDepartement(ville.getDepartement(), ville.getDepartement().getId());
-//		villeDao.modifierVille(id, ville);
-//	}
-//
-//	public void supprimerVille(int idVille) {
-//		villeDao.supprimerVille(idVille);
-//	}
+	public void modifierVille(VilleTp6 ville, int id) {
+		departementService.modifierDepartement(ville.getDepartement(),ville.getDepartement().getId());
+		VilleTp6 villeEnBase = findById(id);
+		if(villeEnBase !=null) {
+			villeEnBase.setNom(ville.getNom());
+			villeEnBase.setNbHabitants(ville.getNbHabitants());
+			villeEnBase.setDepartement(ville.getDepartement());
+			villeRepository.save(villeEnBase);
+		}
+	}
+
+	public void supprimerVille(int idVille) {
+		villeRepository.deleteById(idVille);
+	}
 
 }

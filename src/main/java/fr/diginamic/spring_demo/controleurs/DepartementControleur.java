@@ -44,7 +44,7 @@ public class DepartementControleur {
 	
 	public DepartementDTO convertirDepartementDto(DepartementTp6 departement) {
 		if (departement != null) {
-			return new DepartementDTO(departement.getId(), departement.getNom(),departement.getVilles().stream().map(v-> new VilleDTO(v.getId(),v.getNom(),v.getDepartement().getNom())).toList());
+			return new DepartementDTO(departement.getCodeDep(), departement.getNom(),departement.getVilles().stream().map(v-> new VilleDTO(v.getId(),v.getNom(),v.getDepartement().getNom())).toList());
 		}
 		return null;
 	}
@@ -56,7 +56,7 @@ public class DepartementControleur {
 	 */
 	@GetMapping("/rechercheParId")
 	public ResponseEntity<DepartementTp6> extraireDepParId(@RequestParam String id) {
-		return  ResponseEntity.ok(departementService.extractDepId(id));
+		return  ResponseEntity.ok(departementService.extractDepCode(id));
 	}
 	
 	/**
@@ -80,7 +80,7 @@ public class DepartementControleur {
 		if(result.hasErrors()){
 			return ResponseEntity.badRequest().body("Les entrées ne sont pas exactes");
 		}
-		DepartementTp6 departement = departementService.extractDepId(nvDep.getId());
+		DepartementTp6 departement = departementService.extractDepCode(nvDep.getCodeDep());
 		if(departement == null) {
 			departementService.insertDepartement(nvDep);
 			return ResponseEntity.ok(departementService.extractDepartement().toString());
@@ -89,40 +89,40 @@ public class DepartementControleur {
 	}
 	
 	
-//	/**
-//	 * @param id
-//	 * @param editDepartement
-//	 * @param result
-//	 * @return
-//	 */
-//	@PutMapping("/{id}")
-//	public ResponseEntity<String> modifierDepartement(@Valid @PathVariable String id,@RequestBody DepartementTp6 editDepartement,BindingResult result){
-//		if(result.hasErrors()){
-//			return ResponseEntity.badRequest().body("Les données passées sont incorrectes");
-//		}
-//		DepartementTp6 departement =departementService.extractDepId(id);
-//		if(departement != null) {
-//			departementService.modifierDepartement(editDepartement, id);
-//			return ResponseEntity.ok(departementService.extractDepartement().toString());
-//		}
-//		return ResponseEntity.badRequest().body("Le département n'existe pas");
-//	}
-//	
-//	
-//	/**
-//	 * @param id
-//	 * @return
-//	 */
-//	@DeleteMapping("/{id}")
-//	public ResponseEntity<String> supprimerDepartement(@PathVariable String id){
-//		DepartementTp6 ville = departementService.extractDepId(id);
-//		if(ville != null) {
-//			departementService.supprimerDepartement(id);
-//			return ResponseEntity.ok(departementService.extractDepartement().toString());
-//		}
-//		return ResponseEntity.badRequest().body("Le département n'existe pas !");
-//		
-//	}
+	/**
+	 * @param id
+	 * @param editDepartement
+	 * @param result
+	 * @return
+	 */
+	@PutMapping("/{id}")
+	public ResponseEntity<String> modifierDepartement(@Valid @PathVariable int id,@RequestBody DepartementTp6 editDepartement,BindingResult result){
+		if(result.hasErrors()){
+			return ResponseEntity.badRequest().body("Les données passées sont incorrectes");
+		}
+		DepartementTp6 departement =departementService.findById(id);
+		if(departement != null) {
+			departementService.modifierDepartement(editDepartement,id);
+			return ResponseEntity.ok(departementService.extractDepartement().toString());
+		}
+		return ResponseEntity.badRequest().body("Le département n'existe pas");
+	}
+	
+	
+	/**
+	 * @param id
+	 * @return
+	 */
+	@DeleteMapping("/{id}")
+	public ResponseEntity<String> supprimerDepartement(@PathVariable int id){
+		DepartementTp6 ville = departementService.findById(id);
+		if(ville != null) {
+			departementService.supprimerDepartement(id);
+			return ResponseEntity.ok(departementService.extractDepartement().toString());
+		}
+		return ResponseEntity.badRequest().body("Le département n'existe pas !");
+		
+	}
 	
 
 }

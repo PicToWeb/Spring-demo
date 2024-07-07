@@ -6,7 +6,7 @@ import java.util.List;
 
 public class DepartementDTO {
 	
-	private String id;
+	private String codeDep;
 	private String nom;
 	private List<VilleDTO> villes = new ArrayList<>();
 	
@@ -15,9 +15,9 @@ public class DepartementDTO {
 	 * @param nom
 	 * @param villes
 	 */
-	public DepartementDTO(String id, String nom, List<VilleDTO> villes) {
+	public DepartementDTO(String codeDep, String nom, List<VilleDTO> villes) {
 		super();
-		this.id = id;
+		this.codeDep = codeDep;
 		this.nom = nom;
 		this.villes = villes;
 	}
@@ -26,7 +26,7 @@ public class DepartementDTO {
 
 	@Override
 	public String toString() {
-		return id + " " + nom + " " + villes + " \n ";
+		return codeDep + " " + nom + " " + villes + " \n ";
 	}
 
 
@@ -48,8 +48,8 @@ public class DepartementDTO {
 	/** Getter for id
 	 * @return the id
 	 */
-	public String getId() {
-		return id;
+	public String getCodeDep() {
+		return codeDep;
 	}
 
 	/** Getter for nom
