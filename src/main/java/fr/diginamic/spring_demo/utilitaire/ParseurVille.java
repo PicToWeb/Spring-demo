@@ -18,7 +18,7 @@ public class ParseurVille {
 		String[] column = ligne.split(";");
 		
 		
-		String nomRegion = column[1];
+		String nomRegion = "";
 		String codeDepartement = column[2].trim();
 		String nomCommune = column[6];
 		String population = column[9];

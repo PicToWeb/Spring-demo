@@ -77,7 +77,7 @@ public class VilleTp6 implements EnsemblePop {
 
 	@Override
 	public String toString() {
-		return  getId() + " " + getNom() + " " + getNbHabitants()  + " \n";
+		return  getId() + " " + getNom() + " " + getNbHabitants()  +  getDepartement().getNom() + " \n";
 	}
 
 	/** Getter for id

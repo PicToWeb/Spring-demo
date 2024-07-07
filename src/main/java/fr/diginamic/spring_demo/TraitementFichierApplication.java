@@ -21,10 +21,12 @@ public class TraitementFichierApplication implements CommandLineRunner{
 	private VilleService villeService;
 	
 	public static void main(String[] args) {
+		//SpringApplication.run(SpringDemoApplication.class, args);
 		
 		SpringApplication application = new SpringApplication(TraitementFichierApplication.class);
 		application.setWebApplicationType(WebApplicationType.NONE);
 		application.run(args);
+		
 		
 	}
 	
@@ -34,7 +36,17 @@ public class TraitementFichierApplication implements CommandLineRunner{
 		List<VilleTp6> ville = RecensementUtils.lire(filePath);
 		
 		Collections.sort(ville, new PopComparateur(false));
-		ville.stream().limit(10).forEach(v-> villeService.insertVille(v));
+		int limite = 1000;
+		final int[] compteur = {0}; 
+
+		ville.stream().forEach(v -> {
+		    if (compteur[0] < limite) {
+		        int result = villeService.insertVille(v);
+		        if (result > 0) {
+		            compteur[0]++;
+		        }
+		    }
+		});
 
 	}
 

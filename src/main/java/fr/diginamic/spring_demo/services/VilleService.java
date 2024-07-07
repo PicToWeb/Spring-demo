@@ -41,17 +41,20 @@ public class VilleService {
 	public VilleTp6 findByNom(String nomVille) {
 		return villeRepository.findByNom(nomVille);
 	}
+		
 
-	public void insertVille(VilleTp6 ville) {
+	public int insertVille(VilleTp6 ville) {
 	
+		int i=0;
 		VilleTp6 villeTrouve = findByNom(ville.getNom());
 
 		if (villeTrouve == null) {
 			departementService.insertDepartement(ville.getDepartement());
 			ville.setDepartement(departementService.extractDepId(ville.getDepartement().getId()));
-			villeRepository.save(ville);		
+			villeRepository.save(ville);
+			i++;
 		}
-		
+		return i;
 	}
 
 //	public void modifierVille(VilleTp6 ville, int id) {
