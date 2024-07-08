@@ -13,37 +13,43 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
+/**
+ *  Entité permetant la liaison en base de donée pour les départements
+ */
 @Entity
-@Table(name="departement")
+@Table(name = "departement")
 public class DepartementTp6 {
 
+	/** id */
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
-	private String codeDep;
-	
-	private String nom;
-	
-	@OneToMany(fetch = FetchType.EAGER,mappedBy="departement", cascade = CascadeType.REMOVE, orphanRemoval = true)
-	private Set<VilleTp6>villes = new HashSet<>();
-	
 
-	/** Constructor
+	/** codeDep */
+	private String codeDep;
+
+	/** nom */
+	private String nom;
+
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "departement", cascade = CascadeType.REMOVE, orphanRemoval = true)
+	private Set<VilleTp6> villes = new HashSet<>();
+
+	/**
+	 * Constructor
 	 * 
 	 */
 	public DepartementTp6() {
 	}
-	
 
-	/** Constructor
+	/**
+	 * Constructor
+	 * 
 	 * @param nom
 	 */
-	public DepartementTp6(String codeDep,String nom) {
-		this.codeDep=codeDep;
+	public DepartementTp6(String codeDep, String nom) {
+		this.codeDep = codeDep;
 		this.nom = nom;
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -64,61 +70,70 @@ public class DepartementTp6 {
 
 	@Override
 	public String toString() {
-		return getId() + " " + getCodeDep() + " " + getNom()  +  " \n";
+		return getId() + " " + getCodeDep() + " " + getNom() + " \n";
 	}
-	
 
-	/** Getter for id
+	/**
+	 * Getter for id
+	 * 
 	 * @return the id
 	 */
 	public int getId() {
 		return id;
 	}
 
-	/** Getter for nom
+	/**
+	 * Getter for nom
+	 * 
 	 * @return the nom
 	 */
 	public String getNom() {
 		return nom;
 	}
 
-	/** Setter for nom
+	/**
+	 * Setter for nom
+	 * 
 	 * @param nom the nom to set
 	 */
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
-	
 
-	/** Getter for codeDep
+	/**
+	 * Getter for codeDep
+	 * 
 	 * @return the codeDep
 	 */
 	public String getCodeDep() {
 		return codeDep;
 	}
 
-
-	/** Setter for codeDep
+	/**
+	 * Setter for codeDep
+	 * 
 	 * @param codeDep the codeDep to set
 	 */
 	public void setCodeDep(String codeDep) {
 		this.codeDep = codeDep;
 	}
 
-
-	/** Getter for villes
+	/**
+	 * Getter for villes
+	 * 
 	 * @return the villes
 	 */
 	public Set<VilleTp6> getVilles() {
 		return villes;
 	}
 
-	/** Setter for villes
+	/**
+	 * Setter for villes
+	 * 
 	 * @param villes the villes to set
 	 */
 	public void setVilles(Set<VilleTp6> villes) {
 		this.villes = villes;
 	}
 
-	
 }

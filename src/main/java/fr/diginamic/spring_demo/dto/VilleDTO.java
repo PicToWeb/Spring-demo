@@ -6,6 +6,8 @@ public class VilleDTO {
 	
 	private String name; 
 	
+	private int nbHab;
+	
 	private String departementName;
 
 	/** Constructor
@@ -13,9 +15,10 @@ public class VilleDTO {
 	 * @param name
 	 * @param departementName
 	 */
-	public VilleDTO(int id, String name, String departementName) {
+	public VilleDTO(int id, String name,int nbHab, String departementName) {
 		this.id = id;
 		this.name = name;
+		this.nbHab=nbHab;
 		this.departementName = departementName;
 	}
 	
@@ -42,6 +45,22 @@ public class VilleDTO {
 	 */
 	public String getName() {
 		return name;
+	}
+	
+	
+
+	/** Getter for nbHab
+	 * @return the nbHab
+	 */
+	public int getNbHab() {
+		return nbHab;
+	}
+
+	/** Setter for nbHab
+	 * @param nbHab the nbHab to set
+	 */
+	public void setNbHab(int nbHab) {
+		this.nbHab = nbHab;
 	}
 
 	/** Getter for departementName
