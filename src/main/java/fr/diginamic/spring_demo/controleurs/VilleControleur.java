@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import fr.diginamic.spring_demo.entity.DepartementTp6;
 import fr.diginamic.spring_demo.entity.VilleTp6;
+import fr.diginamic.spring_demo.services.DepartementService;
 import fr.diginamic.spring_demo.services.VilleService;
 import jakarta.validation.Valid;
 
@@ -25,6 +26,9 @@ public class VilleControleur {
 
 	@Autowired
 	public VilleService villeService;
+	
+	@Autowired
+	public DepartementService departementService;
 
 	// TP - 6
 
@@ -48,7 +52,7 @@ public class VilleControleur {
 	}
 	
 	/**
-	 * villes/rechercheParId?id=1
+	 * villes/rechercheNomCommence/Par
 	 * 
 	 * @param id
 	 * @return
@@ -67,7 +71,7 @@ public class VilleControleur {
 	}
 	
 	/**
-	 * villes/rechercheParId?id=1
+	 * villes/rechercheVillePopMin/150000
 	 * 
 	 * @param id
 	 * @return
@@ -95,6 +99,55 @@ public class VilleControleur {
 	public ResponseEntity<VilleTp6> extraireVilleParNom(@PathVariable String nom) {
 		return ResponseEntity.ok(villeService.findByNom(nom));
 	}
+	
+	/**
+	 * villes/recherchePopEntre?min=1&max=2500
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("/recherchePopEntre")
+	public ResponseEntity<String> extraireVillePopMinAndMax(@RequestParam int min,@RequestParam int max) {
+		return ResponseEntity.ok(villeService.findByNbHabitantsBetween(min,max).toString());
+	}
+	
+	/**
+	 * villes/recherchePopDepVille?idDep=1&min=15000
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("/recherchePopDepVille")
+	public ResponseEntity<String> extraireVillePopMinInDepartement(@RequestParam int idDep,@RequestParam int min) {
+		DepartementTp6 departement = departementService.findById(idDep);
+		return ResponseEntity.ok(villeService.findByDepartementAndNbHabitantsGreaterThan(departement,min).toString());
+	}
+	
+	/**
+	 * villes/recherchePopDepVilleEntre?idDep=2&min=15000&max=20000
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("/recherchePopDepVilleEntre")
+	public ResponseEntity<String> extraireVillePopMinInDepartement(@RequestParam int idDep,@RequestParam int min,@RequestParam int max) {
+		DepartementTp6 departement = departementService.findById(idDep);
+		return ResponseEntity.ok(villeService.findByDepartementAndNbHabitantsBetween(departement,min,max).toString());
+	}
+	
+	/**
+	 * villes/rechercheDesNVilleDep?idDep=2&nombre=15000
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("/rechercheDesNVilleDep")
+	public ResponseEntity<String> extraireNVilleInDepartement(@RequestParam int idDep,@RequestParam int nombre) {
+		DepartementTp6 departement = departementService.findById(idDep);
+		return ResponseEntity.ok(villeService.TopNVillesByDepartementMaxPop(departement,nombre).toString());
+	}
+	
+	
 
 	/**
 	 * @param nvVille
