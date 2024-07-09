@@ -103,8 +103,8 @@ public class DepartementService {
 	/**
 	 * Methode qui converti un département en DTO.
 	 * 
-	 * @param departement
-	 * @return DepartementDto
+	 * @param departement departementTp6
+	 * @return DepartementDto departement
 	 */
 	public DepartementDTO convertirDepartementDto(DepartementTp6 departement) {
 		if (departement != null) {
@@ -115,9 +115,9 @@ public class DepartementService {
 	}
 
 	/** 
-	 * Méthode qui compte le nombre d'habitant d'une liste de ville
-	 * @param listeVille
-	 * @return int
+	 * Méthode qui comptabilise le nombre d'habitant d'une liste de ville
+	 * @param listeVille liste de villes
+	 * @return int nombre
 	 */
 	public int compterPopulation(Set<VilleTp6> listeVille) {
 		int tot = 0;
@@ -130,8 +130,8 @@ public class DepartementService {
 	/**
 	 * Méthode qui modifie un département en base de donnée
 	 * 
-	 * @param departement
-	 * @param id
+	 * @param departement departement reçu
+	 * @param id identifiant du département
 	 */
 	public void modifierDepartement(DepartementTp6 departement, int id) {
 		DepartementTp6 departementEnBase = findById(id);
@@ -145,7 +145,7 @@ public class DepartementService {
 	/**
 	 * Méthode qui supprime un département en base de donnée
 	 * 
-	 * @param idDepartement
+	 * @param idDepartement identifiant du département
 	 */
 	public void supprimerDepartement(int idDepartement) {
 		departementRepository.deleteById(idDepartement);

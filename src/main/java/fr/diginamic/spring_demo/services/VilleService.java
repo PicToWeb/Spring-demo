@@ -164,10 +164,8 @@ public class VilleService {
 	 * @return int
 	 */
 	public int insertVille(VilleTp6 ville) {
-
 		int i = 0;
 		VilleTp6 villeEnBase = findByNom(ville.getNom());
-
 		if (villeEnBase == null) {
 			departementService.insertDepartement(ville.getDepartement());
 			ville.setDepartement(departementService.extractDepCode(ville.getDepartement().getCodeDep()));

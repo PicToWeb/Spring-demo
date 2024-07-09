@@ -33,17 +33,15 @@ public class VilleControleur {
      */
     @Autowired
     public DepartementService departementService;
+
     /**
      * villeRepository
      */
     @Autowired
     private VilleRepository villeRepository;
 
-    // TP - 6
-
     /**
      * Méthode qui retourne la liste des villes
-     *
      * @return ResponseEntity<String>
      */
     @GetMapping
@@ -52,8 +50,9 @@ public class VilleControleur {
     }
 
     /**
-     * @param page
-     * @param size
+     * Affiche les villes sous forme de pagination
+     * @param page nombre de la page
+     * @param size taille d'élément dans la page
      * @return
      */
     @GetMapping("/pagination")
@@ -62,8 +61,8 @@ public class VilleControleur {
     }
 
     /**
-     * villes/rechercheParId?id=1
-     *
+     * Affiche les villes selon l'id passé en paramètre
+     * requete : villes/rechercheParId?id=1
      * @param id correspond à l'identifiant de la ville
      * @return ResponseEntity<VilleTp6>
      */
@@ -73,8 +72,8 @@ public class VilleControleur {
     }
 
     /**
-     * villes/rechercheParNom/Montpellier
-     *
+     * Affiche les villes selon le nom reçu en paramètre
+     * requete : villes/rechercheParNom/Montpellier
      * @param nom correspond au nom de la ville
      * @return ResponseEntity<VilleTp6>
      */
@@ -84,8 +83,8 @@ public class VilleControleur {
     }
 
     /**
-     * villes/rechercheNomCommence/Par
-     *
+     * Affiche les villes dont le nom commence par la chaine de caractère passée en paramètre
+     * requete : villes/rechercheNomCommence/Par
      * @param nom correspond au nom de la ville
      * @return ResponseEntity<String>
      */
@@ -99,7 +98,8 @@ public class VilleControleur {
     }
 
     /**
-     * villes/rechercheVillePopMin/150000
+     * Affiche une liste des villes dont la population minimal correspond au nombre reçu en paramètre
+     * requete : villes/rechercheVillePopMin/150000
      *
      * @param nb correspond au nombre minimal d'habitant
      * @return ResponseEntity<String>
@@ -114,7 +114,8 @@ public class VilleControleur {
     }
 
     /**
-     * villes/recherchePopEntre?min=1&max=2500
+     * Affiche la liste des villes dont la population est comprise entre les deux nombres reçu en paramètre
+     * requete : villes/recherchePopEntre?min=1&max=2500
      *
      * @param min nombre minimal d'habitant
      * @param max nombre maximal d'habitant
@@ -130,7 +131,8 @@ public class VilleControleur {
     }
 
     /**
-     * villes/recherchePopDepVille?idDep=1&min=15000
+     * Affiche la liste des villes d'un département avec une population minimale reçu en paramètre
+     * requete : villes/recherchePopDepVille?idDep=1&min=15000
      *
      * @param idDep numéro de l'identifiant du département
      * @param min   nombre minimal d'habitant
@@ -147,7 +149,8 @@ public class VilleControleur {
     }
 
     /**
-     * villes/recherchePopDepVilleEntre?idDep=2&min=15000&max=20000
+     * Affiche la liste des villes d'un département reçu en paramètre ayant une population comprise entre deux valeurs
+     * requete : villes/recherchePopDepVilleEntre?idDep=2&min=15000&max=20000
      *
      * @param idDep numéro d'identifiant du département
      * @param min   nombre minimal d'habitant
@@ -166,8 +169,8 @@ public class VilleControleur {
     }
 
     /**
-     * villes/rechercheDesNVilleDep?idDep=2&nombre=15000
-     *
+     * Affiche le nombre de villes souhaités en fonction d'un département donné
+     * requete : villes/rechercheDesNVilleDep?idDep=2&nombre=15000
      * @param idDep  numéro d'identifiant du département
      * @param nombre nombre de villes à afficher
      * @return ResponseEntity<String>
@@ -183,6 +186,7 @@ public class VilleControleur {
     }
 
     /**
+     * Insère une ville en base de donnée
      * @param nvVille Correspond aux données d'une nouvelle ville
      * @param result  permet de tester les validations
      * @return ResponseEntity<String>
@@ -197,9 +201,10 @@ public class VilleControleur {
     }
 
     /**
+     * Permet de modifier une ville située en base de donnée
      * @param id        correspond à l'identifiant de la ville
      * @param editVille correspond aux données de la ville
-     * @param result    vérfie les données entrées
+     * @param result    vérifie les données entrées
      * @return ResponseEntity<String>
      */
     @PutMapping("/{id}")
@@ -216,6 +221,7 @@ public class VilleControleur {
     }
 
     /**
+     * Permet de supprimer une ville de la base de donnée
      * @param id identifiant de la ville
      * @return ResponseEntity<String>
      */
@@ -228,109 +234,4 @@ public class VilleControleur {
         villeService.supprimerVille(id);
         return ResponseEntity.ok(villeService.extractVilles().toString());
     }
-
-//	private List<Ville> liste = List.of(new Ville("Montpellier", 350000), new Ville("Nimes", 260000));
-//	private List<Ville> liste = new ArrayList<>();
-//	
-//
-//
-//
-//	/**
-//	 * villes/rechercheParNom?nom=Montpellier
-//	 * 
-//	 * @param nom
-//	 * @return
-//	 */
-//	@GetMapping("/rechercheParNom")
-//	public Ville extraireVille(@RequestParam String nom) {
-//		System.out.println(nom);
-//
-//		return liste.stream().filter(v -> v.getNom().equals(nom)).findFirst().orElse(null);
-//
-//	}
-//
-//	/**
-//	 * villes/Montpellier
-//	 * 
-//	 * @param nom
-//	 * @return
-//	 */
-//	@GetMapping("/nom/{nom}")
-//	public Ville extraireVilleChemin(@PathVariable String nom) {
-//		System.out.println(nom);
-//
-//		return liste.stream().filter(v -> v.getNom().equals(nom)).findFirst().orElse(null);
-//
-//	}
-
-// TP 4 
-
-//	@PostMapping
-//	public ResponseEntity<String> insererVille(@RequestBody Ville nvVille) {
-//		if(liste.contains(nvVille)) {
-//			return ResponseEntity.badRequest().body("La ville" + nvVille.getNom() + "existe déjà");
-//		}
-//		liste.add(nvVille);
-//		return ResponseEntity.ok("Succes!");
-//	}
-
-// TP 6
-
-//	@GetMapping
-//	public List<Ville> extraireVilles() {
-//		return liste;
-//	}
-
-//	/** 
-//	 *  L'annotation @GetMapping indique à Spring qu'il doit extraire une ville par son id
-//	 * @param id
-//	 * @return ville
-//	 */
-//	@GetMapping("/{id}")
-//	public Ville extraireVilleParId(@PathVariable int id) {
-//		return liste.stream().filter(v -> v.getId() == id).findFirst().orElse(null);
-//	}
-//	
-//	@PostMapping
-//	public ResponseEntity<String> insererVille(@Valid @RequestBody Ville nvVille,BindingResult result) {
-//				
-//		if(result.hasErrors()){
-//			return ResponseEntity.badRequest().body("Les données passées en param sont incorrectes");
-//		}
-//		
-//		Ville ville = extraireVilleParId(nvVille.getId());
-//		if(ville == null) {
-//			liste.add(nvVille);
-//		return ResponseEntity.ok("Succes!");
-//		}
-//		return ResponseEntity.badRequest().body("La ville existe déjà");
-//	}
-//	
-//	@PutMapping("/{id}")
-//	public ResponseEntity<String> modifierVille(@Valid @PathVariable int id,@RequestBody Ville editVille,BindingResult result){
-//		
-//		if(result.hasErrors()){
-//			return ResponseEntity.badRequest().body("Les données passées en param sont incorrectes");
-//		}
-//		
-//		Ville ville = extraireVilleParId(id);
-//		if(ville != null) {
-//			ville.setId(editVille.getId());
-//			ville.setNom(editVille.getNom());
-//			ville.setNbHabitants(editVille.getNbHabitants());
-//			return ResponseEntity.ok("Succes!");
-//		}
-//		return ResponseEntity.badRequest().body("La ville n'existe pas");
-//	}
-//	
-//	@DeleteMapping("/{id}")
-//	public ResponseEntity<String> deleteVille(@PathVariable int id){
-//		Ville ville = extraireVilleParId(id);
-//		if(ville != null) {
-//			liste.remove(ville);
-//			return ResponseEntity.ok("Succes!");
-//		}
-//		return ResponseEntity.badRequest().body("La ville n'existe pas !");
-//		
-//	}
 }
