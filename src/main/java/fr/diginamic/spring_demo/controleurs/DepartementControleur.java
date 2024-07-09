@@ -32,13 +32,13 @@ public class DepartementControleur {
 	/**
 	 * Méthode qui récupère et affiche tous les départements présent en base de
 	 * donnée
-	 * 
+	 *
 	 * @return Liste des départements
 	 */
 	@GetMapping
 	public List<DepartementDTO> extraireVilles() {
-
 		List<DepartementTp6> departList = departementService.extractDepartement();
+
 
 		return departList.stream().map(dep -> departementService.convertirDepartementDto(dep))
 				.collect(Collectors.toList());
@@ -47,9 +47,9 @@ public class DepartementControleur {
 
 	/**
 	 * Méthode qui recherche un département via son id
-	 * 
+	 *
 	 * departements/rechercheParId?id=1
-	 * 
+	 *
 	 * @param id
 	 * @return ResponseEntity
 	 */
@@ -57,25 +57,26 @@ public class DepartementControleur {
 	public ResponseEntity<DepartementDTO> extraireDepParId(@RequestParam int id) {
 		DepartementTp6 dep = departementService.findById(id);
 		DepartementDTO depDTO = departementService.convertirDepartementDto(dep);
-		
+
 		return ResponseEntity.ok(depDTO);
 	}
 
 	/**
 	 * Méthode qui recherche un département via son nom
 	 * departements/rechercheParNom/Occitanie
-	 * 
+	 *
 	 * @param nom
 	 * @return ResponseEntity
 	 */
 	@GetMapping("/rechercheParNom/{nom}")
-	public ResponseEntity<DepartementTp6> extraireDepParNom(@PathVariable String nom) {
-		return ResponseEntity.ok(departementService.extractDepNom(nom));
+	public ResponseEntity<DepartementDTO> extraireDepParNom(@PathVariable String nom) {
+		DepartementTp6 dep = departementService.extractDepNom(nom);
+		return ResponseEntity.ok(departementService.convertirDepartementDto(dep));
 	}
 
 	/**
 	 * Méthode POST qui permet d'insérer un département en base de donnée
-	 * 
+	 *
 	 * @param nvDep
 	 * @param result
 	 * @return ResponseEntity
@@ -95,7 +96,7 @@ public class DepartementControleur {
 
 	/**
 	 * Méthode PUT qui permet de modifier un département en base de donnée
-	 * 
+	 *
 	 * @param id
 	 * @param editDepartement
 	 * @param result
@@ -117,7 +118,7 @@ public class DepartementControleur {
 
 	/**
 	 * Méthode DELETE qui permet de supprimer un département en base de donnée
-	 * 
+	 *
 	 * @param id
 	 * @return ResponseEntity
 	 */

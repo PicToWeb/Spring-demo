@@ -1,15 +1,15 @@
 package fr.diginamic.spring_demo.services;
 
-import java.util.Collections;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import fr.diginamic.spring_demo.dto.VilleDTO;
 import fr.diginamic.spring_demo.entity.DepartementTp6;
 import fr.diginamic.spring_demo.entity.VilleTp6;
 import fr.diginamic.spring_demo.repositories.VilleRepository;
 import fr.diginamic.spring_demo.utilitaire.PopComparateur;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.data.domain.PageRequest;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Classe de service pour les villes. Elle est appelée par le controleur et
@@ -36,12 +36,12 @@ public class VilleService {
 //		return villes.stream().map(v -> convertirVilleDto(v)).collect(Collectors.toList());
 	}
 
-//	public VilleDTO convertirVilleDto(VilleTp6 ville) {
-//		if (ville != null) {
-//			return new VilleDTO(ville.getId(), ville.getNom(), ville.getDepartement().getNom());
-//		}
-//		return null;
-//	}
+	public VilleDTO convertirVilleDto(VilleTp6 ville) {
+		if (ville != null) {
+			return new VilleDTO(ville.getId(), ville.getNom(),ville.getNbHabitants(), ville.getDepartement().getNom());
+		}
+		return null;
+	}
 
 	/**
 	 * Méthode qui ajoute les 1000 villes les plus peuplées en base de donnée.

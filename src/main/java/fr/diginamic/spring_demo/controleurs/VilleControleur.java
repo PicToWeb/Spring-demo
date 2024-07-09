@@ -1,210 +1,224 @@
 package fr.diginamic.spring_demo.controleurs;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import fr.diginamic.spring_demo.dto.VilleDTO;
 import fr.diginamic.spring_demo.entity.DepartementTp6;
 import fr.diginamic.spring_demo.entity.VilleTp6;
+import fr.diginamic.spring_demo.repositories.VilleRepository;
 import fr.diginamic.spring_demo.services.DepartementService;
 import fr.diginamic.spring_demo.services.VilleService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/villes")
 public class VilleControleur {
 
-	/** villeService */
-	@Autowired
-	public VilleService villeService;
+    /**
+     * villeService
+     */
+    @Autowired
+    public VilleService villeService;
 
-	/** departementService */
-	@Autowired
-	public DepartementService departementService;
+    /**
+     * departementService
+     */
+    @Autowired
+    public DepartementService departementService;
+    /**
+     * villeRepository
+     */
+    @Autowired
+    private VilleRepository villeRepository;
 
-	// TP - 6
+    // TP - 6
 
-	/**
-	 * Méthode qui retourne la liste des villes 
-	 * @return ResponseEntity<String>
-	 */
-	@GetMapping
-	public ResponseEntity<String> extraireVilles() {
-		return ResponseEntity.ok(villeService.extractVilles().toString());
-	}
+    /**
+     * Méthode qui retourne la liste des villes
+     *
+     * @return ResponseEntity<String>
+     */
+    @GetMapping
+    public ResponseEntity<String> extraireVilles() {
+        return ResponseEntity.ok(villeService.extractVilles().toString());
+    }
 
-	/**
-	 * villes/rechercheParId?id=1
-	 * 
-	 * @param id
-	 * @return ResponseEntity<VilleTp6>
-	 */
-	@GetMapping("/rechercheParId")
-	public ResponseEntity<VilleTp6> extraireVilleParId(@RequestParam int id) {
-		return ResponseEntity.ok(villeService.findById(id));
-	}
+    @GetMapping("/pagination")
+    public Page<VilleDTO> extraireVillesPage(@RequestParam int page, @RequestParam int size) {
+        return villeRepository.findAll(PageRequest.of(page, size)).map(villeService::convertirVilleDto);
+    }
 
-	/**
-	 * villes/rechercheNomCommence/Par
-	 * 
-	 * @param id
-	 * @return ResponseEntity<String>
-	 */
-	@GetMapping("/rechercheNomCommence/{nom}")
-	public ResponseEntity<String> extraireVilleCommencePar(@PathVariable String nom) {
+    /**
+     * villes/rechercheParId?id=1
+     *
+     * @param id correspond à l'identifiant de la ville
+     * @return ResponseEntity<VilleTp6>
+     */
+    @GetMapping("/rechercheParId")
+    public ResponseEntity<VilleTp6> extraireVilleParId(@RequestParam int id) {
+        return ResponseEntity.ok(villeService.findById(id));
+    }
 
-		List<VilleTp6> villeListe = villeService.findByNomStartingWith(nom);
-		if (villeListe.size() > 0) {
+    /**
+     * villes/rechercheNomCommence/Par
+     *
+     * @param nom correspond au nom de la ville
+     * @return ResponseEntity<String>
+     */
+    @GetMapping("/rechercheNomCommence/{nom}")
+    public ResponseEntity<String> extraireVilleCommencePar(@PathVariable String nom) {
 
-			return ResponseEntity.ok(villeService.findByNomStartingWith(nom).toString());
-		}
+        List<VilleTp6> villeListe = villeService.findByNomStartingWith(nom);
+        if (!villeListe.isEmpty()) {
 
-		return ResponseEntity.badRequest().body("Aucune ville ne correspond");
-	}
+            return ResponseEntity.ok(villeService.findByNomStartingWith(nom).toString());
+        }
 
-	/**
-	 * villes/rechercheVillePopMin/150000
-	 * 
-	 * @param id
-	 * @return ResponseEntity<String>
-	 */
-	@GetMapping("/rechercheVillePopMin/{nb}")
-	public ResponseEntity<String> extraireVillePopMin(@PathVariable int nb) {
+        return ResponseEntity.badRequest().body("Aucune ville ne correspond");
+    }
 
-		List<VilleTp6> villeListe = villeService.findByNbHabitantsGreaterThan(nb);
-		if (villeListe.size() > 0) {
+    /**
+     * villes/rechercheVillePopMin/150000
+     *
+     * @param nb correspond au nombre minimal d'habitant
+     * @return ResponseEntity<String>
+     */
+    @GetMapping("/rechercheVillePopMin/{nb}")
+    public ResponseEntity<String> extraireVillePopMin(@PathVariable int nb) {
 
-			return ResponseEntity.ok(villeService.findByNbHabitantsGreaterThan(nb).toString());
-		}
+        List<VilleTp6> villeListe = villeService.findByNbHabitantsGreaterThan(nb);
+        if (!villeListe.isEmpty()) {
 
-		return ResponseEntity.badRequest().body("Aucune ville ne correspond");
-	}
+            return ResponseEntity.ok(villeService.findByNbHabitantsGreaterThan(nb).toString());
+        }
 
-	/**
-	 * villes/rechercheParNom/Montpellier
-	 * 
-	 * @param nom
-	 * @return ResponseEntity<VilleTp6>
-	 */
-	@GetMapping("/rechercheParNom/{nom}")
-	public ResponseEntity<VilleTp6> extraireVilleParNom(@PathVariable String nom) {
-		return ResponseEntity.ok(villeService.findByNom(nom));
-	}
+        return ResponseEntity.badRequest().body("Aucune ville ne correspond");
+    }
 
-	/**
-	 * villes/recherchePopEntre?min=1&max=2500
-	 * 
-	 * @param id
-	 * @return ResponseEntity<String>
-	 */
-	@GetMapping("/recherchePopEntre")
-	public ResponseEntity<String> extraireVillePopMinAndMax(@RequestParam int min, @RequestParam int max) {
-		return ResponseEntity.ok(villeService.findByNbHabitantsBetween(min, max).toString());
-	}
+    /**
+     * villes/rechercheParNom/Montpellier
+     * @param nom correspond au nom de la ville
+     * @return ResponseEntity<VilleTp6>
+     */
+    @GetMapping("/rechercheParNom/{nom}")
+    public ResponseEntity<VilleTp6> extraireVilleParNom(@PathVariable String nom) {
+        return ResponseEntity.ok(villeService.findByNom(nom));
+    }
 
-	/**
-	 * villes/recherchePopDepVille?idDep=1&min=15000
-	 * 
-	 * @param id
-	 * @return ResponseEntity<String>
-	 */
-	@GetMapping("/recherchePopDepVille")
-	public ResponseEntity<String> extraireVillePopMinInDepartement(@RequestParam int idDep, @RequestParam int min) {
-		DepartementTp6 departement = departementService.findById(idDep);
-		return ResponseEntity.ok(villeService.findByDepartementAndNbHabitantsGreaterThan(departement, min).toString());
-	}
+    /**
+     * villes/recherchePopEntre?min=1&max=2500
+     * @param min nombre minimal d'habitant
+     * @param max nombre maximal d'habitant
+     * @return ResponseEntity<String>
+     */
+    @GetMapping("/recherchePopEntre")
+    public ResponseEntity<String> extraireVillePopMinAndMax(@RequestParam int min, @RequestParam int max) {
+        return ResponseEntity.ok(villeService.findByNbHabitantsBetween(min, max).toString());
+    }
 
-	/**
-	 * villes/recherchePopDepVilleEntre?idDep=2&min=15000&max=20000
-	 * 
-	 * @param id
-	 * @return ResponseEntity<String>
-	 */
-	@GetMapping("/recherchePopDepVilleEntre")
-	public ResponseEntity<String> extraireVillePopMinInDepartement(@RequestParam int idDep, @RequestParam int min,
-			@RequestParam int max) {
-		DepartementTp6 departement = departementService.findById(idDep);
-		return ResponseEntity.ok(villeService.findByDepartementAndNbHabitantsBetween(departement, min, max).toString());
-	}
+    /**
+     * villes/recherchePopDepVille?idDep=1&min=15000
+     * @param idDep numéro de l'identifiant du département
+     * @param min nombre minimal d'habitant
+     * @return ResponseEntity<String>
+     */
+    @GetMapping("/recherchePopDepVille")
+    public ResponseEntity<String> extraireVillePopMinInDepartement(@RequestParam int idDep, @RequestParam int min) {
+        DepartementTp6 departement = departementService.findById(idDep);
+        return ResponseEntity.ok(villeService.findByDepartementAndNbHabitantsGreaterThan(departement, min).toString());
+    }
 
-	/**
-	 * villes/rechercheDesNVilleDep?idDep=2&nombre=15000
-	 * 
-	 * @param id
-	 * @return ResponseEntity<String>
-	 */
-	@GetMapping("/rechercheDesNVilleDep")
-	public ResponseEntity<String> extraireNVilleInDepartement(@RequestParam int idDep, @RequestParam int nombre) {
-		DepartementTp6 departement = departementService.findById(idDep);
-		return ResponseEntity.ok(villeService.TopNVillesByDepartementMaxPop(departement, nombre).toString());
-	}
+    /**
+     * villes/recherchePopDepVilleEntre?idDep=2&min=15000&max=20000
+     * @param idDep numéro d'identifiant du département
+     * @param min nombre minimal d'habitant
+     * @param max nombre maximal d'habitant
+     * @return ResponseEntity<String>
+     */
+    @GetMapping("/recherchePopDepVilleEntre")
+    public ResponseEntity<String> extraireVillePopMinInDepartement(@RequestParam int idDep, @RequestParam int min,
+                                                                   @RequestParam int max) {
+        DepartementTp6 departement = departementService.findById(idDep);
+        return ResponseEntity.ok(villeService.findByDepartementAndNbHabitantsBetween(departement, min, max).toString());
+    }
 
-	/**
-	 * @param nvVille
-	 * @param result
-	 * @return ResponseEntity<String>
-	 */
-	@PostMapping
-	public ResponseEntity<String> insererVille(@Valid @RequestBody VilleTp6 nvVille, BindingResult result) {
+    /**
+     * villes/rechercheDesNVilleDep?idDep=2&nombre=15000
+     * @param idDep numéro d'identifiant du département
+     * @param nombre nombre de villes à afficher
+     * @return ResponseEntity<String>
+     */
+    @GetMapping("/rechercheDesNVilleDep")
+    public ResponseEntity<String> extraireNVilleInDepartement(@RequestParam int idDep, @RequestParam int nombre) {
+        DepartementTp6 departement = departementService.findById(idDep);
+        return ResponseEntity.ok(villeService.TopNVillesByDepartementMaxPop(departement, nombre).toString());
+    }
 
-		if (result.hasErrors()) {
-			return ResponseEntity.badRequest().body("Les entrées ne sont pas exactes");
-		}
-		villeService.insertVille(nvVille);
+    /**
+     *
+     * @param nvVille Correspond aux données d'une nouvelle ville
+     * @param result permet de tester les validations
+     * @return ResponseEntity<String>
+     */
+    @PostMapping
+    public ResponseEntity<String> insererVille(@Valid @RequestBody VilleTp6 nvVille, BindingResult result) {
 
-		return ResponseEntity.ok(villeService.extractVilles().toString());
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body("Les entrées ne sont pas exactes");
+        }
+        villeService.insertVille(nvVille);
 
-	}
+        return ResponseEntity.ok(villeService.extractVilles().toString());
 
-	/**
-	 * @param id
-	 * @param editVille
-	 * @param result
-	 * @return ResponseEntity<String>
-	 */
-	@PutMapping("/{id}")
-	public ResponseEntity<String> modifierVille(@Valid @PathVariable int id, @RequestBody VilleTp6 editVille,
-			BindingResult result) {
+    }
 
-		if (result.hasErrors()) {
-			return ResponseEntity.badRequest().body("Les données passées sont incorrectes");
-		}
+    /**
+     *
+     * @param id correspond à l'identifiant de la ville
+     * @param editVille correspond aux données de la ville
+     * @param result vérfie les données entrées
+     * @return ResponseEntity<String>
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<String> modifierVille(@Valid @PathVariable int id, @RequestBody VilleTp6 editVille,
+                                                BindingResult result) {
 
-		VilleTp6 ville = villeService.findById(id);
-		if (ville != null) {
-			villeService.modifierVille(editVille, id);
-			return ResponseEntity.ok(villeService.extractVilles().toString());
-		}
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body("Les données passées sont incorrectes");
+        }
 
-		return ResponseEntity.badRequest().body("La ville n'existe pas");
-	}
+        VilleTp6 ville = villeService.findById(id);
+        if (ville != null) {
+            villeService.modifierVille(editVille, id);
+            return ResponseEntity.ok(villeService.extractVilles().toString());
+        }
 
-	/**
-	 * @param id
-	 * @return ResponseEntity<String>
-	 */
-	@DeleteMapping("/{id}")
-	public ResponseEntity<String> deleteVille(@PathVariable int id) {
+        return ResponseEntity.badRequest().body("La ville n'existe pas");
+    }
 
-		VilleTp6 ville = villeService.findById(id);
-		if (ville != null) {
-			villeService.supprimerVille(id);
-			return ResponseEntity.ok(villeService.extractVilles().toString());
-		}
+    /**
+     *
+     * @param id identifiant de la ville
+     * @return ResponseEntity<String>
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteVille(@PathVariable int id) {
 
-		return ResponseEntity.badRequest().body("La ville n'existe pas !");
+        VilleTp6 ville = villeService.findById(id);
+        if (ville != null) {
+            villeService.supprimerVille(id);
+            return ResponseEntity.ok(villeService.extractVilles().toString());
+        }
 
-	}
+        return ResponseEntity.badRequest().body("La ville n'existe pas !");
+
+    }
 
 //	private List<Ville> liste = List.of(new Ville("Montpellier", 350000), new Ville("Nimes", 260000));
 //	private List<Ville> liste = new ArrayList<>();

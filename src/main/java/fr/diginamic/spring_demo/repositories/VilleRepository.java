@@ -2,8 +2,8 @@ package fr.diginamic.spring_demo.repositories;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import fr.diginamic.spring_demo.entity.DepartementTp6;
@@ -13,18 +13,18 @@ import fr.diginamic.spring_demo.entity.VilleTp6;
  * Interface utilisé pour redéfinir des méthodes du repository utilisée pour communiquer avec la base de donnée
  */
 @Repository
-public interface VilleRepository extends CrudRepository<VilleTp6,Integer> {
+public interface VilleRepository extends JpaRepository<VilleTp6,Integer> {
 
 	/**
 	 * Méthode utilisée pour trouver une ville via son nom
-	 * @param nomVille
+	 * @param nomVille nom de la ville
 	 * @return VilleTp6
 	 */
 	VilleTp6 findByNom(String nomVille);
 	
 	 /** 
 	  * Méthode utilisée pour trouver une ville qui commence par la chaine de caractère reçue en paramètre
-	 * @param prefixe
+	 * @param prefixe chaine de caractère correspondant au debut du nom d'une ville
 	 * @return List<VilleTp6>
 	 */
 	List<VilleTp6> findByNomStartingWith(String prefixe);
