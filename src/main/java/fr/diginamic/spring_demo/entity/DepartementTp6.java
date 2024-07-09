@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Size;
 
 /**
  *  Entité permetant la liaison en base de donée pour les départements
@@ -26,6 +27,7 @@ public class DepartementTp6 {
 	private int id;
 
 	/** codeDep */
+	@Size(min=2,max=3)
 	private String codeDep;
 
 	/** nom */

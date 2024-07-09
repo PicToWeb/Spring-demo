@@ -25,11 +25,11 @@ public class VilleTp6 implements EnsemblePop {
 	
 	/** nom */
 	@NotNull
-	@Size(min=2)
+	@Size(min=2,message="Le nom de la ville doit être supérieur à 2 caractères")
 	private String nom;
 	
 	/** nbHabitants */
-	@Min(value=1)
+	@Min(value=10,message="Le nombre d'habitants doit être égal ou supérieur à 10")
 	private int nbHabitants;
 	
 	@ManyToOne
@@ -42,13 +42,11 @@ public class VilleTp6 implements EnsemblePop {
 	/** Constructor
 	 * 
 	 */
-	public VilleTp6() {
-
-	}
+	public VilleTp6() {	}
 
 	/** Constructor
-	 * @param nom
-	 * @param nbHabitants
+	 * @param nom nom de la ville
+	 * @param nbHabitants nombre d'habitants
 	 */
 	public VilleTp6(String nom, int nbHabitants) {
 		this.nom = nom;

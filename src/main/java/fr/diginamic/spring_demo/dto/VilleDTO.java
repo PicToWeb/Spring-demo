@@ -25,8 +25,6 @@ public class VilleDTO {
 	public VilleDTO() {
 		
 	}
-	
-	
 
 	@Override
 	public String toString() {
@@ -46,8 +44,6 @@ public class VilleDTO {
 	public String getName() {
 		return name;
 	}
-	
-	
 
 	/** Getter for nbHab
 	 * @return the nbHab
