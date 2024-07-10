@@ -75,6 +75,7 @@ public class VilleControleur {
             writer.close();
 
         response.flushBuffer();
+
     }
     /**
      * Affiche les villes sous forme de pagination

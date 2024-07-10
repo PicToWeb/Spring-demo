@@ -138,6 +138,7 @@ public class DepartementService {
 		}
 	}
 
+
 	/**
 	 * Methode qui converti un département en DTO.
 	 * 
