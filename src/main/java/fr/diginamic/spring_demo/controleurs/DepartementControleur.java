@@ -1,9 +1,16 @@
 package fr.diginamic.spring_demo.controleurs;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import java.util.stream.Collectors;
 
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfWriter;
+import jakarta.servlet.http.HttpServletResponse;
+import org.hibernate.query.sqm.produce.function.FunctionArgumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -72,6 +79,37 @@ public class DepartementControleur {
 	public ResponseEntity<DepartementDTO> extraireDepParNom(@PathVariable String nom) {
 		DepartementTp6 dep = departementService.extractDepNom(nom);
 		return ResponseEntity.ok(departementService.convertirDepartementDto(dep));
+	}
+
+	@GetMapping("/pdfMinHab/{codeDep}")
+	public void ficheDepartement(@PathVariable String codeDep, HttpServletResponse response) throws IOException, DocumentException {
+
+		response.setHeader("Content-Disposition", "attachment; filename=\"departement.pdf\"");
+//		List<DepartementTp6> departList = departementService.extractDepartement();
+		List<DepartementDTO> departementDto = extraireVilles();
+
+
+		Document document = new Document();
+		PdfWriter.getInstance(document,response.getOutputStream());
+
+		document.open();
+		document.addTitle("Département : " + codeDep);
+		document.newPage();
+		BaseFont baseFont=BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.EMBEDDED);
+
+		departementDto.forEach(d->{
+			if(d.getCodeDep().equals(codeDep)) {
+//				DepartementDTO dep = departementService.convertirDepartementDto(d);
+                try {
+                    document.add(new Phrase(d.getVilles() + " " + d.getNbHabitants() ,new Font(baseFont,32,1,new BaseColor(0,51,80))));
+                } catch (DocumentException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+		});
+		document.close();
+		response.flushBuffer();
 	}
 
 	/**

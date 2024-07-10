@@ -77,6 +77,8 @@ public class VilleControleur {
         response.flushBuffer();
 
     }
+
+
     /**
      * Affiche les villes sous forme de pagination
      * @param page nombre de la page

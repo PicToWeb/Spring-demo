@@ -28,7 +28,7 @@ public class VilleDTO {
 
 	@Override
 	public String toString() {
-		return getId() + " " + getName() + " " + getDepartementName() + " \n";
+		return getName() + " " + getNbHab()  + " \n";
 	}
 
 	/** Getter for id
