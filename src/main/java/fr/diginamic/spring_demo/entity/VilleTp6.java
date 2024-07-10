@@ -25,7 +25,7 @@ public class VilleTp6 implements EnsemblePop {
 	
 	/** nom */
 	@NotNull
-	@Size(min=2,message="Le nom de la ville doit être supérieur à 2 caractères")
+	@Size(min=2,max=255,message="Le nom de la ville doit être supérieur à 2 caractères")
 	private String nom;
 	
 	/** nbHabitants */

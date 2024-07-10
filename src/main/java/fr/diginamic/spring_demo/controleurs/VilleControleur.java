@@ -7,6 +7,12 @@ import fr.diginamic.spring_demo.repositories.VilleRepository;
 import fr.diginamic.spring_demo.services.DepartementService;
 import fr.diginamic.spring_demo.services.VilleService;
 import fr.diginamic.spring_demo.utilitaire.AnomalieException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +21,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,11 +52,30 @@ public class VilleControleur {
      * Méthode qui retourne la liste des villes
      * @return ResponseEntity<String>
      */
+    @Operation(summary = "Affiche la liste des villes")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Retourne la liste des villes",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = VilleDTO.class)) })})
     @GetMapping
-    public ResponseEntity<String> extraireVilles() {
-        return ResponseEntity.ok(villeService.extractVilles().toString());
+    public ResponseEntity<Iterable<VilleTp6>> extraireVilles() {
+        return ResponseEntity.ok(villeService.extractVilles());
     }
 
+    @GetMapping("/csvMinHab/{min}")
+    public void ficheCsv(@PathVariable int min, HttpServletResponse response) throws IOException {
+        response.setHeader("Content-Disposition", "attachment; filename=\"fichier.csv\"");
+        List<VilleTp6> villes = villeRepository.findByNbHabitantsGreaterThan(min);
+        PrintWriter writer = response.getWriter();
+        for (VilleTp6 ville : villes) {
+            String ligne = ville.getNom() + ";" + ville.getNbHabitants() + ";" + ville.getDepartement().getCodeDep() + ";" + ville.getDepartement().getNom();
+            writer.println(ligne);
+            }
+            writer.close();
+
+        response.flushBuffer();
+    }
     /**
      * Affiche les villes sous forme de pagination
      * @param page nombre de la page
@@ -191,6 +218,14 @@ public class VilleControleur {
      * @param result  permet de tester les validations
      * @return ResponseEntity<String>
      */
+    @Operation(summary = "Création d'une nouvelle ville")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Retourne la liste des villes incluant la dernière ville créée",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = VilleTp6.class)) }),
+            @ApiResponse(responseCode = "400", description = "Si une règle métier n'est pas respectée.",
+                    content = @Content)})
     @PostMapping
     public ResponseEntity<String> insererVille(@Valid @RequestBody VilleTp6 nvVille, BindingResult result) throws AnomalieException {
         if (result.hasErrors()) {
@@ -207,6 +242,14 @@ public class VilleControleur {
      * @param result    vérifie les données entrées
      * @return ResponseEntity<String>
      */
+    @Operation(summary = "Modification d'une nouvelle ville")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Retourne la liste des villes incluant la dernière ville modifiée",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = VilleTp6.class)) }),
+            @ApiResponse(responseCode = "400", description = "Si une règle métier n'est pas respectée.",
+                    content = @Content)})
     @PutMapping("/{id}")
     public ResponseEntity<String> modifierVille(@Valid @PathVariable int id, @RequestBody VilleTp6 editVille, BindingResult result) throws AnomalieException {
         if (result.hasErrors()) {
@@ -225,6 +268,14 @@ public class VilleControleur {
      * @param id identifiant de la ville
      * @return ResponseEntity<String>
      */
+    @Operation(summary = "Supprime une ville")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Retourne la liste des villes",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = VilleTp6.class)) }),
+            @ApiResponse(responseCode = "400", description = "Si une règle métier n'est pas respectée.",
+                    content = @Content)})
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteVille(@PathVariable int id) throws AnomalieException {
         VilleTp6 ville = villeService.findById(id);

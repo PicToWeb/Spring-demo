@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import fr.diginamic.spring_demo.entity.DepartementTp6;
 
+
 @Repository
 public interface DepartementRepository extends CrudRepository<DepartementTp6,Integer> {
 	
